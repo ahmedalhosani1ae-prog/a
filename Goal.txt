@@ -1,0 +1,239 @@
+# UE5 DAILY FORGE: ADAPTIVE UNREAL ENGINE LEARNING PLATFORM
+
+## 1. PRODUCT GOAL
+
+Build a secure web application that generates one practical Unreal Engine 5.x lesson at a time. Lessons adapt daily to each learner's ability, chosen specialty, available time, prior work, and whether they are building a continuous game project.
+
+This is not a fixed 30-day course. A beginner, experienced Blueprint designer, C++-first programmer, and environment artist should receive different next tasks. A missed day never resets progress; the system resumes from the last valid project state.
+
+### Core promise
+
+- One tangible, testable UE5 outcome per session.
+- Sessions match the learner's actual budget: 5 minutes, 10 minutes, 15 minutes, 30 minutes, 60 minutes, or custom.
+- Difficulty responds to completion notes, confidence, blockers, and demonstrated work.
+- Learners may specialize in Blueprints, C++, art/FX, environments, UI, optimization, or general UE5.
+- In Project Journey mode, every task advances one coherent game toward a user-selected launch date or project-day target.
+
+---
+
+## 2. LEARNING MODES
+
+### Skill Sprint
+
+Self-contained, focused exercises for a chosen area:
+
+- Blueprint logic and gameplay framework
+- C++ gameplay programming and Unreal integration
+- Materials, shaders, Niagara, Lumen, and lighting
+- Environment art, level design, PCG, and optimization
+- UMG UI/UX and game systems
+- General UE5 mastery
+
+Example: an intermediate lighting artist with 15 minutes receives a focused Lumen or material task, not beginner movement setup.
+
+### Project Journey
+
+The learner chooses a project concept, genre, platform, Blueprint/C++ balance, desired features, and target launch day. The generator maintains a dependency-aware backlog and produces the next viable vertical-slice step.
+
+Example for a simple third-person game: sprint → crouch → movement states → interaction trace → pickup/objective → HUD → enemy prototype → blockout → checkpoints → playtest → package. This is an example, not a preset course; the order adapts to the learner and project.
+
+### Hybrid
+
+Alternate project tasks with a supporting skill task when it removes a real project blocker or builds the skill needed for the next feature.
+
+---
+
+## 3. ADAPTIVE ONBOARDING
+
+### Step 1: Experience
+
+Collect self-rating and optional evidence:
+
+- New to Unreal Engine
+- Familiar with the editor
+- Comfortable with Blueprints
+- Comfortable with materials, lighting, or Niagara
+- Comfortable with C++
+- Advanced / shipping experience
+
+Ask which systems they have already built. Do not assume general programming experience equals UE C++ experience.
+
+### Step 2: Time reality
+
+Set a default daily budget and allow an override before every task:
+
+- Quick: 5-10 minutes
+- Focused: 15 minutes
+- Standard: 30 minutes
+- Deep: 45-60 minutes
+- Custom
+
+Scale the artifact, not merely the explanation. A 10-minute task is one narrow change with a visible test; a 60-minute task may include build, integration, and polish for one coherent feature.
+
+### Step 3: Mode and goal
+
+Choose Skill Sprint, Project Journey, or Hybrid. Project Journey collects project name, elevator pitch, genre, camera style, target platform, launch date or number of project days, and preferred features.
+
+### Step 4: Constraints
+
+Capture UE version, focus areas, hardware limits, installed plugins, asset policy, accessibility needs, and Blueprint/C++ preference.
+
+---
+
+## 4. DAILY GENERATION LOOP
+
+1. The learner confirms today's available minutes.
+2. They mark the previous task complete, partial, skipped, or blocked and add notes/evidence.
+3. The backend reads the profile, history, project state, dependencies, and current budget.
+4. The AI generates exactly one next task.
+5. The learner completes and verifies the artifact; the result updates skill progress and project state.
+
+### Adaptation rules
+
+- **Completed confidently:** advance by one small complexity increment or unlock the next dependency.
+- **Completed with difficulty:** reinforce the skill in a new, small context.
+- **Partial:** continue the unfinished artifact; preserve work.
+- **Blocked:** generate a diagnostic/recovery task or a smaller fallback first.
+- **Missed:** resume without penalty.
+- **Goal/time change:** re-plan future work without invalidating completed systems.
+
+---
+
+## 5. PROJECT JOURNEY RULES
+
+Maintain a living project map, not a fixed calendar:
+
+- Vision, genre, camera, target platform, and launch horizon
+- Implemented systems and current playable loop
+- Dependency-aware backlog with estimated complexity
+- Technical choices, plugins, asset policy, and Blueprint/C++ balance
+- Known bugs, blockers, performance observations, and playtest notes
+- Milestones: first playable, core loop, content-complete, polish, package, launch
+
+Prioritize the playable loop, smallest viable implementation, dependencies, integration, and testing. Near launch, reserve work for profiling, accessibility, packaging, bug triage, playtests, and release readiness.
+
+---
+
+## 6. DAILY TASK CONTRACT
+
+```markdown
+### DAY [Number]: [Task Title]
+- **Mode:** Skill Sprint / Project Journey / Hybrid
+- **Category:** Blueprints / C++ / Materials / Niagara / Lighting / Environment / PCG / UI / Optimization / Production
+- **Estimated Time:** [X] mins
+- **Project Context:** [One sentence, or "Self-contained practice task."]
+- **Primary Objective:** [One concise, outcome-oriented sentence]
+- **Step-by-Step Execution Plan:**
+  1. [First action]
+  2. [Build/change the feature]
+  3. [Test and save]
+- **Success Criteria / Verification:** [Clear visual, mechanical, compile, or performance check]
+- **If Blocked:** [One diagnostic or simplified fallback]
+- **Optional Stretch Goal:** [Only if time remains]
+- **Next Level Preview:** [One sentence]
+```
+
+| Available time | Scope |
+| --- | --- |
+| 5-10 min | One configuration, node chain, focused function, or verification step. |
+| 15 min | One contained mechanic or visual result with a basic test. |
+| 30 min | One polished mini-feature with verification. |
+| 45-60 min | One coherent feature including focused integration and playtest. |
+
+---
+
+## 7. TECHNICAL ARCHITECTURE & SECURITY
+
+### Recommended stack
+
+- Next.js (React) for UI and server-side routes
+- Tailwind CSS for UI styling
+- Supabase Auth and Postgres for authentication and data
+- Vercel for hosting
+- Server-side provider adapter for OpenAI, Anthropic, and Google Gemini
+
+### API key security requirements
+
+- Never bundle provider API keys into frontend JavaScript, client configuration, local storage, analytics, or logs.
+- Accept a user key only over HTTPS to an authenticated server endpoint; remove it from browser state after submission.
+- Encrypt keys at rest with authenticated encryption such as AES-256-GCM using an environment-managed master key; store ciphertext, IV/nonce, tag, provider, and key version.
+- Decrypt only briefly in backend memory to make a provider request, and redact secrets from logs and errors.
+- Enable Row Level Security so users can access only their profile, project, and progress. Never expose encrypted keys through public client queries.
+- Rate-limit generation, validate provider/model selection server-side, and provide delete/revoke-key controls.
+- Prefer a managed KMS or secret system where available; encryption supplements rather than replaces access control.
+
+```mermaid
+graph TD
+  A[Authenticated browser] -->|HTTPS session request| B[Next.js server route]
+  A -->|HTTPS key submission only| B
+  B -->|RLS-protected read| C[(Supabase Postgres)]
+  B -->|Decrypt briefly in memory| D[Selected LLM provider]
+  D -->|Structured task response| B
+  B -->|Safe task data only| A
+```
+
+---
+
+## 8. INITIAL DATA MODEL
+
+```sql
+create table profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  daily_time_minutes integer not null default 30 check (daily_time_minutes between 5 and 240),
+  experience_level text not null,
+  learning_mode text not null check (learning_mode in ('skill_sprint', 'project_journey', 'hybrid')),
+  focus_areas jsonb not null default '[]'::jsonb,
+  preferred_ai_provider text,
+  current_streak integer not null default 0
+);
+
+create table encrypted_provider_keys (
+  user_id uuid primary key references profiles(id) on delete cascade,
+  provider text not null, ciphertext text not null, iv text not null,
+  auth_tag text not null, key_version integer not null default 1
+);
+
+create table projects (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  name text not null, vision text not null, target_launch_date date,
+  state jsonb not null default '{}'::jsonb
+);
+
+create table daily_tasks (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references profiles(id) on delete cascade,
+  project_id uuid references projects(id) on delete set null,
+  day_number integer not null, requested_minutes integer not null,
+  task jsonb not null,
+  status text not null default 'generated'
+    check (status in ('generated','in_progress','completed','partial','skipped','blocked')),
+  completion_notes text, created_at timestamptz not null default now(),
+  completed_at timestamptz
+);
+```
+
+Enable RLS on every user-owned table and use policies that compare `auth.uid()` to the owner ID.
+
+---
+
+## 9. SYSTEM PROMPT FOR DAILY TASK GENERATION
+
+```text
+You are an Unreal Engine 5 Senior Technical Director, gameplay programmer, technical artist, and curriculum architect. Generate exactly one next hands-on UE 5.x task.
+
+Input JSON contains: learner profile, experience evidence, focus areas, learning mode, available_minutes, day number, task history, completion notes, blockers, project state, project backlog, dependencies, target launch horizon, and technical constraints.
+
+Adapt to the learner; do not follow a prewritten monthly curriculum.
+
+Rules:
+1. Respect available_minutes exactly. Scale scope and steps, not prose. Under 10 minutes means one narrow, independently testable step.
+2. Match demonstrated UE skill. Do not reteach editor basics to experienced users or assume UE C++ knowledge from general programming.
+3. In Project Journey mode, continue the existing project, check dependencies, and protect the playable vertical slice. Generate prerequisites or recovery work before dependent features.
+4. In Skill Sprint mode, create a self-contained task aligned to selected focus areas.
+5. Completed work advances one small increment. Partial or blocked work continues or repairs the existing artifact. Missed days have no penalty.
+6. Require a concrete verification condition. Avoid vague reading, asset browsing, paid assets, unnecessary plugins, and oversized work.
+7. Use the learner's selected Blueprint/C++/art/FX/UI/environment focus; do not rotate areas arbitrarily.
+8. An optional stretch goal must be nonessential. As launch approaches, plan integration, profiling, accessibility, packaging, playtests, bug triage, and release preparation.
+9. Return Markdown only in the exact Daily Task Contract format from this document.
+```
